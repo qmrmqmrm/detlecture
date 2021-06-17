@@ -103,11 +103,11 @@ def draw_boxes(image, bboxes, category_names, box_format="yxhw"):
         height, width = image.shape[:2]
         bboxes[:, :4] *= np.array([[height, width, height, width]], np.float32)
     if box_format == "yxhw":
-        bboxes = uf.convert_box_format_yxhw_to_2pt(bboxes)
+        bboxes = uf.convert_box_format_yxhw_to_tlbr(bboxes)
     bboxes = bboxes[bboxes[:, 2] > 0, :]
 
     for i, bbox in enumerate(bboxes):
-        pt1, pt2 = (bbox[1], bbox[0]), (bbox[3], bbox[2])
+        pt1, pt2 = (int(bbox[1]), int(bbox[0])), (int(bbox[3]), int(bbox[2]))
         cat_index = int(bbox[4])
         category = category_names[cat_index]
         image = cv2.rectangle(image, pt1, pt2, (255, 0, 0), thickness=2)
