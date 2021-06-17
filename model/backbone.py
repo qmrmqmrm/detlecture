@@ -48,34 +48,25 @@ class Darknet53(BackboneBase):
         e.g. input_tensor.shape[:2] == conv0.shape[:2], conv0.shape[:2]/8 == conv3.shape[:2]
         """
         features = dict()
-        print(f"input {input_tensor.shape}")
         conv0 = self.conv2d(input_tensor, 32)
-        print(f"input {conv0.shape}")
         conv1 = self.conv2d_s2(conv0, 64)
-        print(f"input {conv1.shape}")
         conv1 = self.residual(conv1, 64)
-        print(f"input {conv1.shape}")
+
         conv2 = self.conv2d_s2(conv1, 128)
-        print(f"input {conv2.shape}")
         for i in range(2):
             conv2 = self.residual(conv2, 128)
-        print(f"input {conv2.shape}")
+
         conv3 = self.conv2d_s2(conv2, 256)
-        print(f"input {conv3.shape}")
         for i in range(8):
             conv3 = self.residual(conv3, 256)
         features["backbone_s"] = conv3
-        print(f"input {conv3.shape}")
 
         conv4 = self.conv2d_s2(conv3, 512)
-        print(f"input {conv4.shape}")
         for i in range(8):
             conv4 = self.residual(conv4, 512)
         features["backbone_m"] = conv4
-        print(f"input {conv4.shape}")
 
         conv5 = self.conv2d_s2(conv4, 1024)
-        print(f"input {conv5.shape}")
         for i in range(4):
             conv5 = self.residual(conv5, 1024)
         features["backbone_l"] = conv5
